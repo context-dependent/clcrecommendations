@@ -1,0 +1,127 @@
+# Background
+
+## The Situation
+
+Like many non-profit skills development providers, CLC monitors its own activities, for the purposes of reporting to funders, and also for internal management purposes. 
+
+Its evaluation team (Anastasia and Jacqueline) refresh their reports on a monthly basis. 
+They also produce a quarterly report, which enriches the standard monthly report with additional information. 
+The contents of these reports are used to inform CLC's management team, and also to report to funders.
+
+#### Report contents
+
+The reports comprise estimates of the rate of demographic representation for each of their programs: 
+
+- Own delivery (programs delivered by CLC staff)
+    - Kids Learning Code
+    - Girls Learning Code
+    - Teens Learning Code
+    - Ladies Learning Code
+- Affiliate delivery (programs delivered by affiliate organizations, with materials provided by CLC)
+    - Teachers Learning Code [^affiliate-ambiguity]
+
+[^affiliate-ambiguity]: 
+    Intial conversations with CLC staff have indicated that 'Affiliate programming' can be delivered to children, teens, or adults, but the only 'Program' listed as affiliate delivery in their data is 'Teachers Learning Code'. This is a point of ambiguity that should be clarified with CLC staff.
+
+For each delivery method, and each individual program within that delivery method, CLC calculates the percentage of participants who identify as belonging to each of the following demographic groups: 
+
+- Women and learners beyond the binary [^educator-ambiguity]
+- Low Income
+- Newcomers
+- Learners with physical disabilities
+- French learners
+- Black learners
+- Indigenous learners
+- Rural or remote learners
+
+They combine each of these percentages into a single 'diversity score' for each program, which is intended to track changes in overall representation of the target population over time. 
+
+[^educator-ambiguity]: 
+    In the June 2023 monthly report, this and other categories specifying 'learners' are populated for the 'Educator' audience category. Does CLC count educators as learners? This is a point of ambiguity that should be clarified with CLC staff.
+
+#### Process
+
+Their team uses a number of inputs to produce these reports:
+
+- Salesforce administrative records
+- SurveyMonkey survey responses
+- Eventbrite records (experiences) and survey responses
+- population estimates from Statistics Canada
+
+The reporting process combines manual and automated subprocesses, which -- according to internal estimates -- takes between 20 and 30 hours per month. 
+
+To the best of my current understanding, the process follows this high-level outline: 
+
+1. Extract data from source systems
+2. Audit surveys for response rates, flagging those with sub 10% response rates or sub 30 total responses as 'low responses' 
+3. Combine data into a single table in the monthly reporting google sheet
+4. Use pivot tables to calculate necessary percentages
+
+## The Problem(s)
+
+### Problem 1: it takes too much time
+
+- The current process takes between 20 and 30 hours per month.
+- That's time that could otherwise be spent on other tasks, like improving the process, learning new skills, or fulfilling other commitments.
+- Moreover, it leaves the two person team vulnerable to burnout, as it is a considerable amount of effort to sustain over time. 
+- It also leaves the organization vulnerable to the loss of institutional knowledge, should one or both of the team members leave the organization.
+- Much of the effort involved represents the manual completion of repetitive tasks, which is both tedious and error prone, requiring the team to spend additional time auditing their work.
+- This is a core problem that needs to be addressed, ideally without substantial ongoing expense. 
+
+### Problem 2: They're not confident in it, and uncertain how confident they should be
+
+- Because of the variety of data sources and methods at play, the team is doing work that exceeds their statistical grasp. 
+- We want two things here. First, to make sure the team knows what they're doing, and that it is supported by relevant literature. Second, they want to know that they're making the best possible use of the data they have. 
+- They want to be able to answer questions like "how many responses do we need to be confident in our results?", and "what should we do if we don't meet that number?"
+- They also want to know what and how they can do better. 
+- They have voiced specific concerns about (a) how to deal with data from a small number of respondents, (b) how to use population statistics to impute missing values, and (c) how to describe and explain what they're doing in a way that feels accurate and honest.
+
+### Problem 3: it's not reproducible
+
+- Reproducibility is a really valuable principle in data science, but also in the design and construction of data analysis pipelines. 
+- When the product is a process, errors are easier to diagnose and address efficiently, and improvement over time is easier. 
+- Reproducible pipelines also make it easier to share the work with others, and to collaborate on it.
+- However, they require a substantial up-front investment of time and effort, along with the capacity to maintain, troubleshoot, and improve it. 
+- This is a secondary problem that should be addressed, but only after the first problem has been solved. 
+
+## Solutions, at a high level
+
+### Solution 1: Automate, reinvest, and continue improving
+
+- The 'ETL' process (extract, transform, load) is a common pattern in data science, and one that is well supported by a variety of tools.
+- However, CLC has limited capacity to invest in the procurement or development of new tools, so we need to be careful and creative about how we approach it.
+- Here, we don't want to create a black-box, for whose maintenance and improvement CLC will be dependent on a single individual.
+- Instead, ideal candidates for automation are tasks that can either be automated within the existing stack (googlesheets), or tasks that are expected to be stable over time, and that can be automated as self-contained, modular pieces of the pipeline, like the CLC-Communities package stuff. 
+- The goal here is to reduce the amount of time spent on manual, repetitive tasks, and to reduce the risk of human error, without creating an inflexible system that CLC will be locked into for the foreseeable future.
+
+:::{.callout-note}
+## Building Team Data Engineering Capacity
+
+The actual implementation of this solution could take a variety of forms. 
+Adding data engineering capacity to the team unlocks more impactful forms in this solution space. 
+Hiring for this role is tricky, because it will break your pay scale and your budget, along with requiring a substantial investment of time and effort to onboard and train.
+Training exisiting team members is more cost-effective, but it requires time, effort, and desire to learn on the part of the team member(s), along with a commitment from the organization to make the time and effort available.
+From my perspective, the ideal package of solutions here _creates_ that time in the short-run, to enable sustainable and self-sufficient maintenance and improvement of the pipeline in the long-run. 
+:::
+
+### Solution 2: Document and refine the methodology
+
+- The team has expressed a desire to be more confident in their work, and to be able to explain it to others.
+- The broad strokes of a solution here are to document the methodology clearly and comprehensively, with reference to relevant literature, to make sure the team knows what they're doing and that they can explain it to others. 
+- From preliminary conversations, there are a number of quick wins available with respect to improving the metholodgy, so those should be rolled out immediately. 
+- Looking forward, the team should be encouraged to continue to improve the methodology, and to document those improvements as they go.
+- The team should also have a way to know how well they're doing, or how confident they can be in their results at any given time. 
+
+### Solution 3: Reproducible pipelines
+
+- Reproducible pipelines are a valuable tool for improving the quality of data analysis, and for making it easier to share and collaborate on that work, both internally and externally.
+- The meat of a reproducible pipeline is code of some species, packaged and documented in a way that makes it easy to use and maintain.
+- Currently the team uses Google Sheets to do their work, and they're comfortable with it, but much of the work they do is manual, and therefore not reproducible. 
+
+## Clarifications
+
+### How do the 20-30 hours of monthly reporting break down between J and A?
+
+### What happens when an error is detected in the later stages of the pipeline? 
+
+### What is a learner, in the context of CLC's reporting? 

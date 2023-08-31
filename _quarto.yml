@@ -1,0 +1,35 @@
+project:
+  type: book
+
+book:
+  title: "Practical Technicalities"
+  subtitle: "data-related recommendations for Canada Learning Code"
+  author: "Thomas McManus"
+  date: "2023-08-17"
+  chapters:
+    # - index.qmd
+    # - intro.qmd
+
+    # - part: process.qmd
+    #   chapters:
+    #     - 01-01_tidy-data.qmd
+    #     - 01-02_automation.qmd
+    #     - 01-03_publication.qmd
+
+    - part: stats.qmd
+      chapters: 
+        - 02-01_cwss-score.qmd
+    #     - 02-02_response-rates.qmd
+
+    # - references.qmd
+
+bibliography: references.bib
+
+
+
+format:
+  html:
+    theme: cosmo
+
+
+

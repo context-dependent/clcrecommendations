@@ -1,0 +1,93 @@
+# Process Detail
+
+JB shared a video documenting the process of creating the monthly report. 
+
+## Questions 
+
+- What lets you know that data are incorrect? 
+- What happens when you find incorrect data or results? 
+- How are you handling secrets? 
+- Can I see the ETL tool? 
+- When exactly is the old data used? 
+- What's an oddity? 
+- Lot of 'put this table in', 'change this column', 'add this column', what does this mean?
+
+## Observations
+
+- Surprising amount and sophistication of automation (ETL tool, SQL query). 
+- Lots of manual work for 'validation', 'inspection', 'checks', 'corrections'.
+- Generating summaries itemwise in survey monkey can't be the best way
+- Some points in the process where CLC is creating an interface that demands interaction from the user (e.g. pivot table specifications) but which could be solved by just producing all the necessary views in the first place.
+- Checking and validation subprocesses are not clearly defined, nor are procedures for handling errors. 
+- Straddling the gap between automation and manual work. 
+
+## Opportunities
+
+- Automate ETL from Salesforce (requires admin creds, but straightforward enough)
+- Automate the construction of the communities table, calculation of CWSS score, etc. 
+- Reconfigure the reporting process to generate all the necessary views in the first place
+- Clearly define each check and validation step, and the procedure for handling errors, then bake validation and semantic flags into the pipeline. 
+
+## Misc guidance
+
+- treat separate variables as separate, even in reporting, e.g. audience and delivery channel are two separate categories, not one single category.
+
+## Process
+
+- Salesforce data are the only ones that need manual inspection
+- Use 3 list views to inspect each record and 'make sure they're filled in correctly' 
+
+:::{.callout-note}
+SF data cleaning (correction): 2.5 hours
+Aggregation (concatenation): 4 hours (1.5 hours next time)
+CWSS Table: 3.5 hours
+Program monitoring & SLT / ORG mission control: 2.5 hours
+Indicators: 2.5 hours
+
+Total: 15 hours / month, 180 hours / year
+:::
+
+### 1. Data Extraction
+
+- All data are saved as google sheets in CLC's drive
+- Create and export salesforce report
+- Extract eventbrite data using API! 
+- Download survey data from eventbrite
+
+### 2. Data Transformation
+
+- Manually populate calcaulted fields for the eventbrite survey summaries
+- Use BigQuery SQL query to put the data in the right columns and construct the harmonized dataset
+- Then, 'validate' / audit the combined dataset to make sure the data are correct
+- Bunch of checks, e.g. recalculating pivot table fields, identifying discrepancies between eventbrite and salesforce
+
+### 3. Pivot Tables
+
+- a bunch of pivot tables act as intermediate reporting products
+- lots of checks for each
+- Some manual specfication of pivot table fields 
+- Inspect percentages for 'oddities'
+- Tons of sheets, tons of tables
+
+### 4. Program monitoring report
+
+- Manually add 'MLE' numbers to the corresponding month column in the program monitoring report
+
+### 5. Communities report 
+
+- Calculate overall percentages for each community by weighting the percentages of each delivery channel
+- Compare to previous month to assess whether any indicators are unusually high or low
+
+### 6. Indicators report
+
+- Generate calculated fields in survey monkey with their interface and 'bring them over' to the indicators report.
+
+### Checks
+
+- inspect salesforce list views to ensure that all fields are filled correctly
+- check that the intensity flags are correct
+- check that pivot tables represent the same number of records as the original datasets
+- identify discrepancies between eventbrite and salesforce
+- check MLE numbers against experiences summary report
+- compare community percentages to previous month to identify unusual patterns
+- review MLE dashboard to identify unusual patterns
