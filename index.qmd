@@ -1,5 +1,7 @@
 # Preface {.unnumbered}
 
+{{< include content/_wip.qmd >}}
+
 This 'book' comprises a set of recommendations for the Canada Learning Code (CLC) evaluation team, aimed at helping them improve their data analysis and reporting process. The recommendations are based on the results of a review of the CLC evaluation team's current process. The review of the CLC evaluation team's current process was conducted by the author, in collaboration with the CLC evaluation team. The primary concerns of the recommendations are analysis methods and data management processes. A secondary concern is more forward looking, dealing with potential additions or modifications to CLC's data collection strategy. 
 
 This is a Quarto book.

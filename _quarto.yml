@@ -1,5 +1,9 @@
 project:
   type: book
+  output-dir: docs
+
+execute:
+  freeze: auto
 
 book:
   title: "Practical Technicalities"
@@ -7,7 +11,7 @@ book:
   author: "Thomas McManus"
   date: "2023-08-17"
   chapters:
-    # - index.qmd
+    - index.qmd
     # - intro.qmd
 
     # - part: process.qmd

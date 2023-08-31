@@ -1,0 +1,76 @@
+# organizing data
+
+The upshot of this section is that automated number crunching processes impose particular requirements on the structure of the data they use, if they are to be efficient, effective, and extensible. The data that CLC creates and uses for its reporting process are _not_ organized this way, and so to automate the reporting process, we need to reorganize the data. My primary focus is on the intermediate data products created by CLC in the course of reporting (pivot tables like the ones in `MLEs by Province`, and the tables in `CWSS Table`). I have some general recommendations about organizing the administrative input data, but the pending Salesforce overhaul makes it difficult to make specific recommendations about how to organize the data that comes from the CRM. 
+
+:::{.callout-warning}
+## why should I care? 
+
+- CLC's reporting process is manual and time consuming
+- The intermediate data created and used by CLC is understandably optimized for human, rather than machine interpretability
+- This makes it impossible to increase the scope of automation in the reporting process without redesigning the model for the intermediate data
+- Ultimately, the result is a classic organizational chicken / egg problem, where the organization is unable to automate because the data is not organized, and the data is not organized because the organization is unable to automate
+:::
+
+## Tidy Data
+
+In describing a better data structure, I will make reference to Hadley Wickham's [^hadley] concept of 'tidy data', which he describes in his book [R for Data Science](https://r4ds.had.co.nz/tidy-data.html), and elaborates in his [eponymous paper](https://vita.had.co.nz/papers/tidy-data.pdf). The basic idea is that, if the engineers and analysts working with the data follow the principles of tidy data, the output of every stage of the reporting process will be as easy to work with as its input. From personal experience, I can attest that this is true, whether you are using R, Python, or SQL, and whether you are making a pivot table, a dashboard, or a report.
+
+I'll give his definition of tidy data here, but I encourage you to read the paper for a more thorough explanation. According to Wickham, tidy data has the following properties:
+
+1. Each variable forms a column
+2. Each observation forms a row
+3. Each type of observational unit forms a table[^what-is-table]
+
+By contrast, Wickham also offers a list of commmon issues with data that are _not_ tidy:
+
+A. Column headers are values, not variable names
+B. Multiple variables are stored in one column
+C. Variables are stored in both rows and columns
+D. Multiple types of observational units are stored in the same table
+E. A single observational unit is stored in multiple tables
+
+Issues A, B, C, and E are the most relevant to CLC's reporting process, and they crop up in the intermediate data products that CLC creates and uses.
+
+## Tidying CLC's intermediate tables
+
+### restructuring the communities table
+
+- Current observational unit is Audience X Delivery Channel X Age Group [^age-group], but is much more natural as Audience X Delivery Channel X Age Group X Community
+- Treating community as a variable resolves issue A, enabling us to more elegantly handle the multiple pieces of information (percentage, data source, response rate) that are currently broken out into two tables. 
+- It also allows us to separate into distinct columns data drawn from different sources, which makes the calculation of the final representation estimate both much easier and much more transparent. 
+
+```{r communities-table}
+
+```
+
+### restructuring the pivot tables
+
+- The sheet `LL/RR` currently includes 10 pivot tables, each of which has the same unit of observation.
+- This is an example of issue E, where a single observational unit is stored in multiple tables.
+- It is also an example of issue A, because of the column-wise separation of Audience. 
+- These 10 tables could be combined into a single table with 4 columns: Period (Old / New, though see below for a slightly different concept), Delivery Channel, Audience, and Representation Estimate.
+- The combined table would be much easier to work with, and would make it much easier to automate the process of updating the data. 
+- With a trivial update to the `clccommunities` package, it could also include local representation of newcomers from the Census, which would be both easier and more informative than the current process and data source. 
+
+```{r pivot-tables}
+
+``` 
+
+### handling longitudinal data
+
+- If we zoom out to CLC's reporting process as a whole, we can see that the intermediate data produces are longitudinal, in that they are rebuilt on a monthly basis. 
+- However, the current set up violates principle E, because the 'new' data from the current month are duplicated in the 'old' data of the following month. 
+- The result is the existence of redundant data, and redundant effort used to create it. 
+- The solution is -- for each different unit of observation -- and to add columns that identify the reporting period by year, quarter, and month. 
+- This change will make it easier and less error-prone to combine the data from different months, and will also make it easier to automate the process of updating the data.
+- It applies to all of the intermediate tables, adding three columns (Year, Quarter, and Month) to each, extending the unit of observation to include the reporting period. 
+
+```{r longitudinal-data}
+
+```
+
+[^hadley]: Wickham is the preeminent doyen of the R community, and his work is a major reason for the popularity of R in data science. He is the author of the [tidyverse](https://www.tidyverse.org/) suite of packages, which are the most popular packages in R. He is also the Chief Scientist at RStudio, the company that makes the most popular IDE for R. His insights about data workflows are widely respected and influential, and worth paying attention to even if you don't use R.
+
+[^what-is-table]: In this context, a table is any data structure with rows and columns. It could be a spreadsheet, a database table, or a dataframe in R. Notably -- as it may conflict with CLC's vernacular -- it includes 'data' (like the salesforce exports), as well as 'summary' tables (like the pivot tables with which this section is preoccupied). 
+
+[^age-group]: I'm curious about the age group here. It's not necessarily a problem, but it doesn't seem to be meaningful in the context of the reporting process. I'd like to know more about the rationale for its inclusion in the backbone of the communities table. 
