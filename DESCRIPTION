@@ -16,7 +16,7 @@ Imports:
     scales,
     gridExtra,
     grid,
-    ggrepel,
+    ggdist,
     bptheme, 
     bpscales
 Suggests:  
