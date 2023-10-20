@@ -23,7 +23,7 @@ book:
     - part: stats.qmd
       chapters: 
         - 02-01_cwss-score.qmd
-    #     - 02-02_response-rates.qmd
+        - 02-02_response-rates.qmd
 
     # - references.qmd
 
