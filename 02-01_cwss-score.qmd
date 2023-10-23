@@ -72,6 +72,8 @@ set.seed(1234)
 
 learners <- sim_learners(5000)
 
+readr::write_rds(learners, "data/learners.rds")
+
 knitr::kable(head(learners))
 ```
 
@@ -94,6 +96,8 @@ calculate_cwss <- function(d) {
 }
 
 cwss_summary <- calculate_cwss(learners)
+
+readr::write_rds(cwss_summary, "data/cwss_summary.rds")
 
 knitr::kable(cwss_summary)
 ```

@@ -17,6 +17,32 @@ CLC's current approach to working with small samples is to discard estimates fro
 ## sampling error
 
 To illustrate the relationship bewteen sample size and sampling error, we'll return to the simulated learners from the previous section. 
+
+```{r use-simulated-learners}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(purrr)
+library(ggdist)
+
+calculate_cwss <- function(d) {
+    d |>
+        summarize(across(everything(), mean)) |>
+        mutate(
+            cwss_score = 1 - (
+                (1 - women_and_beyond) *
+                    (1 - low_income) *
+                    (1 - newcomer) *
+                    (1 - physical_disability)
+            ),
+            cwss_error = cwss_score - cwss_actual
+        )
+}
+
+learners <- readr::read_rds("data/learners.rds")
+cwss_summary <- readr::read_rds("data/cwss_summary.rds")
+```
+
 Stats courses on the subject will often begin with abstract examples, like drawing marbles from a bag, or flipping coins, but I've never found those particularly helpful, especially when we have a more concrete example available.
 Below, for a range of sample sizes between 5 and 2500, we draw and summarize 200 samples of that size from the simulated learners.
 For each sample of size $n$ (which we can think of as a set of $n$ survey responses), we calculate the representation of each relevant group in the sample, and compare that to the 'true' representation of that group in the population. 
@@ -44,7 +70,7 @@ cwss_long <- cwss_summary |>
     )
 
 cwss_validation <- cwss_long$val |>
-    set_names(cwss_long$var)
+    purrr::set_names(cwss_long$var)
 
 samples <-
     tibble::tibble(

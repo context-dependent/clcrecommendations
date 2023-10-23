@@ -7,7 +7,7 @@ execute:
 
 book:
   title: "Practical Technicalities"
-  subtitle: "data-related recommendations for Canada Learning Code"
+  subtitle: "data analysis-related recommendations for Canada Learning Code"
   author: "Thomas McManus"
   date: "2023-08-17"
   chapters:
