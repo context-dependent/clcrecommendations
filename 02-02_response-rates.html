@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Practical Technicalities - 2&nbsp; Understanding Response Rates</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./02-01_cwss-score.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Understanding Response Rates</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Practical Technicalities</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">stats.qmd</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-01_cwss-score.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Calculating CWSS Scores</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-02_response-rates.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Understanding Response Rates</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sampling-error" id="toc-sampling-error" class="nav-link active" data-scroll-target="#sampling-error"><span class="toc-section-number">2.1</span>  sampling error</a>
+  <ul class="collapse">
+  <li><a href="#the-margin-of-error" id="toc-the-margin-of-error" class="nav-link" data-scroll-target="#the-margin-of-error"><span class="toc-section-number">2.1.1</span>  the margin of error</a></li>
+  </ul></li>
+  <li><a href="#borrowing-information-from-previous-months" id="toc-borrowing-information-from-previous-months" class="nav-link" data-scroll-target="#borrowing-information-from-previous-months"><span class="toc-section-number">2.2</span>  borrowing information from previous months</a>
+  <ul class="collapse">
+  <li><a href="#a-simple-moving-average" id="toc-a-simple-moving-average" class="nav-link" data-scroll-target="#a-simple-moving-average"><span class="toc-section-number">2.2.1</span>  a simple moving average</a></li>
+  <li><a href="#calculation" id="toc-calculation" class="nav-link" data-scroll-target="#calculation"><span class="toc-section-number">2.2.2</span>  calculation</a></li>
+  <li><a href="#survey-simulation" id="toc-survey-simulation" class="nav-link" data-scroll-target="#survey-simulation"><span class="toc-section-number">2.2.3</span>  survey simulation</a></li>
+  <li><a href="#more-complex-moving-averages" id="toc-more-complex-moving-averages" class="nav-link" data-scroll-target="#more-complex-moving-averages"><span class="toc-section-number">2.2.4</span>  more complex moving averages</a></li>
+  </ul></li>
+  <li><a href="#borrowing-information-from-other-sources" id="toc-borrowing-information-from-other-sources" class="nav-link" data-scroll-target="#borrowing-information-from-other-sources"><span class="toc-section-number">2.3</span>  borrowing information from other sources</a>
+  <ul class="collapse">
+  <li><a href="#a-simple-weighted-average" id="toc-a-simple-weighted-average" class="nav-link" data-scroll-target="#a-simple-weighted-average"><span class="toc-section-number">2.3.1</span>  a simple weighted average</a></li>
+  <li><a href="#a-bayesian-regression-model" id="toc-a-bayesian-regression-model" class="nav-link" data-scroll-target="#a-bayesian-regression-model"><span class="toc-section-number">2.3.2</span>  a bayesian regression model</a></li>
+  <li><a href="#relevant-public-data-sources" id="toc-relevant-public-data-sources" class="nav-link" data-scroll-target="#relevant-public-data-sources"><span class="toc-section-number">2.3.3</span>  relevant public data sources</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Understanding Response Rates</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>In this section, we’ll tackle the challenge of outlining and explaining a methodology that makes the most out of survey data with low response rates without creating misleading or inaccurate results. Our discussion begins with a brief overview of the relationship between sample size and estimate accuracy, and then moves on to a discussion of the possible approaches to working with small samples and their relative merits and drawbacks.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+the current state
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>CLC’s current approach to working with small samples is to discard estimates from small samples and replace them with either the last available estimate from a larger sample, or with an overall estimate for the local population. This approach is conceptually straightforward, but it has a few drawbacks:</p>
+<ol type="1">
+<li>It discards information from the small sample, which is a waste of the effort that went into collecting it.</li>
+<li>It assumes that the last available estimate from a larger sample is still accurate, which may not be the case if the population has changed in the intervening period.</li>
+<li>Assessment and replacement are currently performed manually, which is time consuming and error prone. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+</ol>
+</div>
+</div>
+<section id="sampling-error" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="sampling-error"><span class="header-section-number">2.1</span> sampling error</h2>
+<p>To illustrate the relationship bewteen sample size and sampling error, we’ll return to the simulated learners from the previous section.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>calculate_cwss <span class="ot">&lt;-</span> <span class="cf">function</span>(d) {</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    d <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), mean)) <span class="sc">|&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">cwss_score =</span> <span class="dv">1</span> <span class="sc">-</span> (</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                (<span class="dv">1</span> <span class="sc">-</span> women_and_beyond) <span class="sc">*</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                    (<span class="dv">1</span> <span class="sc">-</span> low_income) <span class="sc">*</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                    (<span class="dv">1</span> <span class="sc">-</span> newcomer) <span class="sc">*</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                    (<span class="dv">1</span> <span class="sc">-</span> physical_disability)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">cwss_error =</span> cwss_score <span class="sc">-</span> cwss_actual</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>learners <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">"data/learners.rds"</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>cwss_summary <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">"data/cwss_summary.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Stats courses on the subject will often begin with abstract examples, like drawing marbles from a bag, or flipping coins, but I’ve never found those particularly helpful, especially when we have a more concrete example available. Below, for a range of sample sizes between 5 and 2500, we draw and summarize 200 samples of that size from the simulated learners. For each sample of size <span class="math inline">\(n\)</span> (which we can think of as a set of <span class="math inline">\(n\)</span> survey responses), we calculate the representation of each relevant group in the sample, and compare that to the ‘true’ representation of that group in the population.</p>
+<div class="cell" data-caption="calculate the sampling error for different sample sizes" data-fig.label="sampling-error">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sim_sample <span class="ot">&lt;-</span> <span class="cf">function</span>(n, k) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">seq_len</span>(k) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            <span class="sc">~</span> learners <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">sample_n</span>(n, <span class="at">replace =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">calculate_cwss</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mutate</span>(<span class="at">run =</span> .x)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">|&gt;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">bind_rows</span>()</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>cwss_long <span class="ot">&lt;-</span> cwss_summary <span class="sc">|&gt;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">everything</span>(),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">names_to =</span> <span class="st">"var"</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">values_to =</span> <span class="st">"val"</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>cwss_validation <span class="ot">&lt;-</span> cwss_long<span class="sc">$</span>val <span class="sc">|&gt;</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    purrr<span class="sc">::</span><span class="fu">set_names</span>(cwss_long<span class="sc">$</span>var)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">500</span>, <span class="dv">1000</span>, <span class="dv">2500</span>),</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">samples =</span> <span class="fu">map</span>(size, sim_sample, <span class="at">k =</span> <span class="dv">200</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unnest</span>(samples)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>sample_errors <span class="ot">&lt;-</span> samples <span class="sc">|&gt;</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="sc">-</span>run, <span class="sc">-</span>size),</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">names_to =</span> <span class="st">"var"</span>,</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>        <span class="at">values_to =</span> <span class="st">"estimate"</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">var =</span> forcats<span class="sc">::</span><span class="fu">fct_inorder</span>(var),</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">population_value =</span> cwss_validation[var],</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">empirical_error =</span> estimate <span class="sc">-</span> population_value,</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">standard_error =</span> (<span class="dv">1</span> <span class="sc">-</span> estimate) <span class="sc">*</span> estimate <span class="sc">/</span> <span class="fu">sqrt</span>(size),</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(size) <span class="sc">|&gt;</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>        <span class="at">mean_absolute_deviation =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(empirical_error)),</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>        <span class="at">mean_se =</span> <span class="fu">mean</span>(standard_error)</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">size =</span> <span class="fu">factor</span>(size))</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>sample_errors <span class="sc">|&gt;</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>var <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"cwss_actual"</span>, <span class="st">"cwss_error"</span>), <span class="sc">!</span>(size <span class="sc">==</span> <span class="st">"5"</span> <span class="sc">&amp;</span> var <span class="sc">==</span> <span class="st">"physical_disability"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> empirical_error, <span class="at">fill =</span> mean_absolute_deviation)) <span class="sc">+</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(var)) <span class="sc">+</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>    ggdist<span class="sc">::</span><span class="fu">stat_slab</span>(<span class="at">expand =</span> T, <span class="at">trim =</span> <span class="cn">FALSE</span>, <span class="at">height =</span> <span class="dv">3</span>, <span class="at">normalize =</span> <span class="st">"groups"</span>, <span class="at">orientation =</span> <span class="st">"vertical"</span>) <span class="sc">+</span></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>    bptheme<span class="sc">::</span><span class="fu">theme_blueprint</span>() <span class="sc">+</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>    bpscales<span class="sc">::</span><span class="fu">scale_fill_blueprint</span>(</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"multi"</span>,</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>        <span class="at">option =</span> <span class="st">"fsc"</span>,</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>        <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">15</span>),</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>        <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">05</span>, .<span class="dv">1</span>, .<span class="dv">15</span>),</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>        <span class="at">guide =</span> <span class="fu">guide_colourbar</span>(<span class="at">barwidth =</span> <span class="dv">25</span>, <span class="at">title.vjust =</span> <span class="dv">1</span>)</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span>.<span class="dv">5</span>, <span class="sc">-</span>.<span class="dv">25</span>, <span class="sc">-</span>.<span class="dv">1</span>, <span class="sc">-</span>.<span class="dv">05</span>, <span class="dv">0</span>, .<span class="dv">05</span>, .<span class="dv">1</span>, .<span class="dv">25</span>, .<span class="dv">5</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="02-02_response-rates_files/figure-html/sampling-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><span class="citation" data-cites="sampling-error">(<a href="#ref-sampling-error" role="doc-biblioref"><strong>sampling-error?</strong></a>)</span> shows the distribution of errors (the difference between the sample’s proportion and the population’s) for each sample size, and for each population group, including the calculated <code>cwss_score</code>. Distributions more tightly clustered around zero indicate less error, and thus more accurate estimates of representation in the population. The ‘slabs’ representing the distributions of errors are coloured to indicate the average absolute error for that sample size and population group. The average absolute error is the average of the absolute value of the error, and is a measure of the average distance between the sample’s estimate and the population’s true value.</p>
+<p>The most prominent and obvious conclusion to draw is intuitive and unsurprising: larger samples yield more accurate estimates of population values. However, there are a few other important and interesting things to note:</p>
+<ul>
+<li>Small samples are not entirely uninformative. Even samples of size 5, which are the smallest we consider here, provide some information about the population, which we can see by the fact that their average absolute error is less than .15, which is much smaller than the average absolute error we would expect if we guessed randomly (which would be .5).</li>
+<li>Compared to the individual characteristics, the <code>cwss_score</code> is much more stable across sample sizes. This is because the <code>cwss_score</code> is a composite of all the individual characteristics, and thus is less sensitive to the random variation in the sample.</li>
+<li>The absolute size of the sample (e.g.&nbsp;5, 10, 50) is much more important to the accuracy of the estimates it produces than is the relative size of the sample (e.g.&nbsp;.1%, .2%, 1%). This is why classical formulations of the margin of error (which we’ll get to later) depend only on the size of the sample, and not on the size of the population.</li>
+</ul>
+<div class="cell" data-fig.label="confidence-ranges">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sample_errors <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>var <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"cwss_actual"</span>, <span class="st">"cwss_error"</span>), <span class="sc">!</span>(size <span class="sc">==</span> <span class="st">"5"</span> <span class="sc">&amp;</span> var <span class="sc">==</span> <span class="st">"physical_disability"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> empirical_error)) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(var)) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    ggdist<span class="sc">::</span><span class="fu">stat_pointinterval</span>() <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    bptheme<span class="sc">::</span><span class="fu">theme_blueprint</span>() <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span>.<span class="dv">5</span>, <span class="sc">-</span>.<span class="dv">25</span>, <span class="sc">-</span>.<span class="dv">1</span>, <span class="sc">-</span>.<span class="dv">05</span>, <span class="dv">0</span>, .<span class="dv">05</span>, .<span class="dv">1</span>, .<span class="dv">25</span>, .<span class="dv">5</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="02-02_response-rates_files/figure-html/confidence-ranges-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="the-margin-of-error" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="the-margin-of-error"><span class="header-section-number">2.1.1</span> the margin of error</h3>
+<p>One of the most familiar situations in which we encounter sampling error is in the reporting of public opinion polls. In this context, the margin of error is a measure of the uncertainty in the estimate of the proportion of the population that holds a particular opinion. The margin of error is calculated using the sample size and the proportion of the sample that holds the opinion in question. It is calculated as the product of the standard error and a constant, which is determined by the desired level of confidence.</p>
+<p>For a proportion (like our estimates of the representation of different groups in the population), the standard error is calculated as <span class="math inline">\(\sqrt{\frac{p(1-p)}{n}}\)</span>, where <span class="math inline">\(p\)</span> is the proportion of the sample that holds the opinion in question, and <span class="math inline">\(n\)</span> is the sample size. The constant is determined by the desired level of confidence, and is calculated as <span class="math inline">\(z \times \sqrt{\frac{p(1-p)}{n}}\)</span>, where <span class="math inline">\(z\)</span> is the z-score associated with the desired level of confidence. For the standard 95% level of confidence, <span class="math inline">\(z\)</span> is 1.96. The relationship between <span class="math inline">\(z\)</span> and the desired level of confidence is always the same.</p>
+<div class="cell" data-fig.label="margin-of-error" data-fig.caption="margin of error for different sample sizes at 95% confidence and 50% representation in the sample">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>moe <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">500</span>, <span class="dv">1000</span>, <span class="dv">2500</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">c</span>(.<span class="dv">1</span>, .<span class="dv">5</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>position_nudgedodge <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">nudge_x =</span> <span class="dv">0</span>, <span class="at">nudge_y =</span> <span class="dv">0</span>, <span class="at">width =</span> <span class="fl">0.75</span>) {</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggproto</span>(<span class="cn">NULL</span>, PositionNudgeDodge, <span class="at">nudge_x =</span> nudge_x, <span class="at">nudge_y =</span> nudge_y, <span class="at">width =</span> width)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>PositionNudgeDodge <span class="ot">&lt;-</span> <span class="fu">ggproto</span>(<span class="st">"PositionNudgeDodge"</span>, PositionDodge,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_x =</span> <span class="dv">0</span>, <span class="at">nudge_y =</span> <span class="dv">0</span>, <span class="at">width =</span> .<span class="dv">75</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">setup_params =</span> <span class="cf">function</span>(self, data) {</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        l <span class="ot">&lt;-</span> <span class="fu">ggproto_parent</span>(PositionDodge, self)<span class="sc">$</span><span class="fu">setup_params</span>(data)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">append</span>(l, <span class="fu">list</span>(<span class="at">x =</span> self<span class="sc">$</span>nudge_x, <span class="at">y =</span> self<span class="sc">$</span>nudge_y))</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">compute_layer =</span> <span class="cf">function</span>(self, data, params, layout) {</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        d <span class="ot">&lt;-</span> <span class="fu">ggproto_parent</span>(PositionNudge, self)<span class="sc">$</span><span class="fu">compute_layer</span>(data, params, layout)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        d <span class="ot">&lt;-</span> <span class="fu">ggproto_parent</span>(PositionDodge, self)<span class="sc">$</span><span class="fu">compute_layer</span>(d, params, layout)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        d</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>moe <span class="sc">|&gt;</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">se =</span> <span class="fu">sqrt</span>(p <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p) <span class="sc">/</span> size),</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">moe =</span> <span class="fl">1.96</span> <span class="sc">*</span> se</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">factor</span>(size))) <span class="sc">+</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    ggdist<span class="sc">::</span><span class="fu">stat_halfeye</span>(</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>            <span class="at">xdist =</span> distributional<span class="sc">::</span><span class="fu">dist_normal</span>(<span class="at">mean =</span> p, <span class="at">sd =</span> se)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> .<span class="dv">3</span>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> p, <span class="at">group =</span> p, <span class="at">label =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{round(100 * p)}% +/- {round(moe * 100, 1)}"</span>)),</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">position =</span> <span class="fu">position_nudgedodge</span>(<span class="at">nudge_y =</span> <span class="sc">-</span>.<span class="dv">1</span>, <span class="at">width =</span> .<span class="dv">3</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">1</span>, .<span class="dv">5</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"proportion"</span>, <span class="at">y =</span> <span class="st">"sample size"</span>) <span class="sc">+</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    bptheme<span class="sc">::</span><span class="fu">theme_blueprint</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="02-02_response-rates_files/figure-html/margin-of-error-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><span class="citation" data-cites="margin-of-error">(<a href="#ref-margin-of-error" role="doc-biblioref"><strong>margin-of-error?</strong></a>)</span> shows the margin of error for different sample sizes at 95% confidence for both 10% and 50% representation in the sample. Directionally, the margin of error agrees with the results of our survey simulations presented in <span class="citation" data-cites="sampling-error">(<a href="#ref-sampling-error" role="doc-biblioref"><strong>sampling-error?</strong></a>)</span>, but the formula produces somewhat more conservative (larger) estimates of the error.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+How much error is too much error?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The answer to this question is a matter of judgement, and depends on the details of how CLC’s reporting will be used, interrogated, and judged both internally by program managers, and externally by funders and other stakeholders. Both <span class="citation" data-cites="sampling-error">(<a href="#ref-sampling-error" role="doc-biblioref"><strong>sampling-error?</strong></a>)</span> and <span class="citation" data-cites="margin-of-error">(<a href="#ref-margin-of-error" role="doc-biblioref"><strong>margin-of-error?</strong></a>)</span> demonstrate that samples of size 5 or 10 risk producing wildly incorrect (and therefore probably unacceptable) estimates, but that samples of size 100 or greater are quite likely to produce estimates within .1 (ten percentage points) of the true value.</p>
+<p>Public opinion polls typically design their sampling and data collection strategies to produce estimates with a maximum margin of error (where the sample value is 50%) of no more than 3 or 4 percentage points, which requires a sample size of roughly 1000. CLC’s need for accuracy is probably not as great as that of a public opinion poll, but it may still be useful to set a benchmark in terms of the maximum acceptable margin of error.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="borrowing-information-from-previous-months" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="borrowing-information-from-previous-months"><span class="header-section-number">2.2</span> borrowing information from previous months</h2>
+<p>CLC’s evaluation team has discussed their struggles with low response rates in the context of individual surveys administered within a given reporting period. However, CLC has the advantage of being able to combine results from multiple reporting periods to increase the sample size available for analysis. The current practice of discarding estimates from small samples and replacing them with the last available estimate from a larger sample prefigures this approach, but we can do better by using all the available data to produce a more accurate and current estimate.</p>
+<section id="a-simple-moving-average" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="a-simple-moving-average"><span class="header-section-number">2.2.1</span> a simple moving average</h3>
+<p>The simplest way to combine estimates from multiple reporting periods is to pool responses from some number of previous reporting periods, and then calculate the proportion of each group in the pooled sample. To illustrate the benefits of this approach, we’ll arbitrarily divide our simulated population of learners into 12 reporting periods, draw ‘batches’ of small samples from each, calculate moving averages with different sizes of window, and then observe the error. For the sake of simplicity, we’ll focus on estimating the representation of <code>women_and_beyond</code> learners in the population, but the approach and the results are applicable to any other group.</p>
+<p>To begin, I’ll divide our simulated learners into 12 ‘monthly’ reporting periods by adding a column to the data frame that indicates which reporting period each learner belongs to. The term period refers to some unit of time, which could be a month, a quarter, or a year, depending on the reporting cycle. I’ll keep the numeric period value, but label each period with a month name for the sake of concreteness and clarity.</p>
+<div class="cell" data-fig.caption="data for moving average example" data-fig.label="data-moving-average">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>period_data <span class="ot">&lt;-</span> learners <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">period =</span> <span class="fu">row_number</span>() <span class="sc">%%</span> <span class="dv">12</span> <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(period) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">month =</span> forcats<span class="sc">::</span><span class="fu">fct_inorder</span>(month.abb[period]),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">quarter =</span> forcats<span class="sc">::</span><span class="fu">fct_inorder</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"Q{(period - 1) %/% 3 + 1}"</span>))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>period_summary <span class="ot">&lt;-</span> period_data <span class="sc">|&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(quarter, month, period) <span class="sc">|&gt;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">N =</span> <span class="fu">n</span>(),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">n_women_and_beyond =</span> <span class="fu">sum</span>(women_and_beyond),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">p_women_and_beyond =</span> <span class="fu">mean</span>(women_and_beyond)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'quarter', 'month'. You can override using
+the `.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>period_summary <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(month, p_women_and_beyond, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> cwss_validation[<span class="st">"women_and_beyond"</span>], <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_path</span>() <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="st">"May"</span>, <span class="at">y =</span> .<span class="dv">51</span>, <span class="at">label =</span> <span class="st">"overall average"</span>, <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> quarter), <span class="at">size =</span> <span class="dv">4</span>, <span class="at">shape =</span> <span class="dv">21</span>) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(.<span class="dv">25</span>, .<span class="dv">75</span>)) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    bptheme<span class="sc">::</span><span class="fu">theme_blueprint</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="02-02_response-rates_files/figure-html/moving-average-data-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><span class="citation" data-cites="data-moving-average">(<a href="#ref-data-moving-average" role="doc-biblioref"><strong>data-moving-average?</strong></a>)</span> shows the proportion of <code>women_and_beyond</code> learners in each reporting period, along with the overall average for the population. Since the division of the population into reporting periods is arbitrary, the proportion of <code>women_and_beyond</code> learners in each period varies somewhat between periods, but cleaves fairly closely to the overall average.</p>
+</section>
+<section id="calculation" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="calculation"><span class="header-section-number">2.2.2</span> calculation</h3>
+<p>Before we simulate a bunch of rounds of survey responses, I’ll calculate the population’s moving average, just to demonstrate the process.</p>
+<div class="cell" data-fig.label="moving-average-example" data-fig.caption="moving average example">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RcppRoll)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggformula)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggstance</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'ggstance'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:ggplot2':
+
+    geom_errorbarh, GeomErrorbarh</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: scales</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'scales'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    discard</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggridges</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'ggridges'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:ggdist':
+
+    scale_point_color_continuous, scale_point_color_discrete,
+    scale_point_colour_continuous, scale_point_colour_discrete,
+    scale_point_fill_continuous, scale_point_fill_discrete,
+    scale_point_size_continuous</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+New to ggformula?  Try the tutorials: 
+    learnr::run_tutorial("introduction", package = "ggformula")
+    learnr::run_tutorial("refining", package = "ggformula")</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>moving_average_proportion <span class="ot">&lt;-</span> <span class="cf">function</span>(N, n, window) {</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">roll_sum</span>(n, window, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">align =</span> <span class="st">"right"</span>) <span class="sc">/</span> <span class="fu">roll_sum</span>(N, window, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">align =</span> <span class="st">"right"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>calc_example <span class="ot">&lt;-</span> period_summary <span class="sc">|&gt;</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">three_month_p =</span> <span class="fu">moving_average_proportion</span>(N, n_women_and_beyond, <span class="dv">3</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>calc_example <span class="sc">|&gt;</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(period, p_women_and_beyond)) <span class="sc">+</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> quarter), <span class="at">size =</span> <span class="dv">4</span>, <span class="at">shape =</span> <span class="dv">21</span>) <span class="sc">+</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(x, y), <span class="at">data =</span> <span class="cf">function</span>(d) <span class="fu">data.frame</span>(<span class="fu">spline</span>(d<span class="sc">$</span>period, d<span class="sc">$</span>three_month_p, <span class="at">n =</span> <span class="dv">100</span>))) <span class="sc">+</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> three_month_p)) <span class="sc">+</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(.<span class="dv">25</span>, .<span class="dv">75</span>)) <span class="sc">+</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">labels =</span> <span class="cf">function</span>(x) month.abb[x]) <span class="sc">+</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    bptheme<span class="sc">::</span><span class="fu">theme_blueprint</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="02-02_response-rates_files/figure-html/moving-average-example-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><span class="citation" data-cites="moving-average-example">(<a href="#ref-moving-average-example" role="doc-biblioref"><strong>moving-average-example?</strong></a>)</span> shows the moving average for the proportion of <code>women_and_beyond</code> learners in the population, calculated using a window of three months. Using the full set of monthly data, we can see that the three month moving average is smoother than the monthly data, and that it hews yet closer to the overall average across all reporting periods. This will remain true for subsequent calculations using simulated survey responses.</p>
+</section>
+<section id="survey-simulation" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="survey-simulation"><span class="header-section-number">2.2.3</span> survey simulation</h3>
+<div class="cell" data-fig.label="survey-data" data-fig.caption="data for survey simulation">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sim_monthly_women_and_beyond <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    d, <span class="co"># data frame of learners with period information</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    n, <span class="co"># number of survey responses to simulate</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    k <span class="co"># number of samples to generate for each reporting period</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    ) {</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    g <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> <span class="fu">group_by</span>(month, period)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">seq_len</span>(k) <span class="sc">|&gt;</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map</span>(<span class="cf">function</span>(i) {</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>            g <span class="sc">|&gt;</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>                <span class="fu">sample_n</span>(n, <span class="at">replace =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>                <span class="fu">summarize</span>(<span class="at">N =</span> n, <span class="at">n =</span> <span class="fu">sum</span>(women_and_beyond), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mutate</span>(<span class="at">iter =</span> i)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>        }) <span class="sc">|&gt;</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">bind_rows</span>() <span class="sc">|&gt;</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ungroup</span>()</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>moving_average_samples <span class="ot">&lt;-</span> <span class="fu">sim_monthly_women_and_beyond</span>(period_data, <span class="dv">15</span>, <span class="dv">200</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(iter) <span class="sc">|&gt;</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">ma_1 =</span> n <span class="sc">/</span> N,</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">ma_2 =</span> <span class="fu">moving_average_proportion</span>(N, n, <span class="dv">2</span>),</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">ma_3 =</span> <span class="fu">moving_average_proportion</span>(N, n, <span class="dv">3</span>),</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">ma_4 =</span> <span class="fu">moving_average_proportion</span>(N, n, <span class="dv">4</span>),</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">ma_5 =</span> <span class="fu">moving_average_proportion</span>(N, n, <span class="dv">5</span>),</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">ma_6 =</span> <span class="fu">moving_average_proportion</span>(N, n, <span class="dv">6</span>)</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matches</span>(<span class="st">"ma_"</span>),</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">names_pattern =</span> <span class="st">"ma_(</span><span class="sc">\\</span><span class="st">d+)"</span>,</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">names_to =</span> <span class="st">"window"</span>,</span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>        <span class="at">values_to =</span> <span class="st">"p_moving_average"</span></span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(p_moving_average))</span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>moving_average_samples <span class="sc">|&gt;</span></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(window, p_moving_average)) <span class="sc">+</span></span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_slab</span>(<span class="fu">aes</span>(<span class="at">fill =</span> window), <span class="at">expand =</span> T, <span class="at">trim =</span> <span class="cn">FALSE</span>, <span class="at">height =</span> <span class="dv">3</span>, <span class="at">normalize =</span> <span class="st">"groups"</span>, <span class="at">orientation =</span> <span class="st">"vertical"</span>) <span class="sc">+</span></span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">data =</span> calc_example, <span class="fu">aes</span>(<span class="at">yintercept =</span> p_women_and_beyond), <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(month), <span class="at">scales =</span> <span class="st">"free_x"</span>, <span class="at">space =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>    bptheme<span class="sc">::</span><span class="fu">theme_blueprint</span>() <span class="sc">+</span></span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>    bpscales<span class="sc">::</span><span class="fu">scale_fill_blueprint</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">type =</span> <span class="st">"multi"</span>, <span class="at">option =</span> <span class="st">"fsc"</span>) <span class="sc">+</span></span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Number of months of data included in estimate"</span>) <span class="sc">+</span></span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, .<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 38 rows containing missing values (`geom_slabinterval()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 32 rows containing missing values (`geom_slabinterval()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 43 rows containing missing values (`geom_slabinterval()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 31 rows containing missing values (`geom_slabinterval()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 26 rows containing missing values (`geom_slabinterval()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="02-02_response-rates_files/figure-html/survey-data-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><span class="citation" data-cites="survey-data">(<a href="#ref-survey-data" role="doc-biblioref"><strong>survey-data?</strong></a>)</span> shows the distributions of estimates of the proportion of <code>women_and_beyond</code> learners in the population, calculated for each reporting period using different window sizes. The furthest left distribution in each panel shows the distribution of estimates calculated using only the data from that reporting period, and the distributions to the right show the distributions of estimates calculated using the data from that reporting period and the previous 1, 2, 3, 4, or 5 reporting periods. Because our simulated dataset only includes 12 months of data, the number of months of data available in January is limited to 1, the number in Februrary to 2, and so on.</p>
+<p>The figure clearly shows that, as the window size (and therefore the sample size) increases, the distributions of estimates become more tightly clustered. However, it is also important to recognize that the center of their distribution shifts as well. This is because the population proportion of <code>women_and_beyond</code> learners varies somewhat between reporting periods, and so the estimates calculated using data from different reporting periods will vary as well. The trade-off this represents is quite common to statistical analysis: by using a moving average to reduce the error in our estimates, we bias those estimates towards the average of the population over the period of time covered by the moving average.</p>
+<p>Using a moving average to borrow sample size from previous reporting periods is suitable for estimating the representation of population characteristics that CLC expects to be relatively stable over time (like gender). However, this approach should be used with caution where representation is expected to change dramatically between periods, especially if / when CLC is attempting to measure the impact of specific interventions.</p>
+</section>
+<section id="more-complex-moving-averages" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="more-complex-moving-averages"><span class="header-section-number">2.2.4</span> more complex moving averages</h3>
+<p>The moving average approach outlined above is simple and easy to implement, but it has a few drawbacks, which can be addressed by modifying its implementation.</p>
+<ul>
+<li>Weights can be applied to the data from each reporting period to place more emphasis on more recent data. This modification mitigates the bias towards the average of the population over the period of time covered by the moving average.</li>
+<li>The window size can be adjusted to include just enough months of data to achieve an acceptable error. This modification also mitigates the bias toward the window average, but at the cost of a more complex implementation.</li>
+</ul>
+</section>
+</section>
+<section id="borrowing-information-from-other-sources" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="borrowing-information-from-other-sources"><span class="header-section-number">2.3</span> borrowing information from other sources</h2>
+<p>As CLC has already recognized, information about the representation of different groups in the local population to which its learners belong is avilable from other sources, including the census and other population surveys. Rather than replacing estimates from small sample sizes entirely, it is possible, as we have seen, to instead <em>augment</em> those estimates with information from other sources. Above, we combined estimates from multiple reporting periods to increase the sample size available for analysis. Here, I’ll discuss two approaches to augmenting estimates from small samples with information from public data sources.</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Ground rules for reporting estimates augmented with external data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When reporting estimates like the ones generated by these methods, it is important to be honest and transparent about their construction. Where possible, stick to the following rules:</p>
+<ul>
+<li>Plainly describe the data and methods used to generate the estimates, preferably with direct links to the data</li>
+<li>Acknowledge the assumptions that underlie the methods</li>
+<li>Justify the assumptions in terms of their relevance to the population of interest</li>
+<li>Address the risk of statistical bias introduced by the external data source alongside your interpretation and analysis</li>
+</ul>
+<p>Adherence to these guidelines will help to ensure that the estimates are not misinterpreted or misused, and will safeguard CLC’s reputation for rigorous and transparent evaluation.</p>
+</div>
+</div>
+<section id="a-simple-weighted-average" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="a-simple-weighted-average"><span class="header-section-number">2.3.1</span> a simple weighted average</h3>
+<p>The simplest way to augment estimates from small samples with information from other sources is to calculate a weighted average of the estimate from the small sample and the estimate from the other source. The basic formula for a weighted average is <span class="math inline">\(\frac{\sum_{i=1}^n w_i x_i}{\sum_{i=1}^n w_i}\)</span>, where <span class="math inline">\(x_i\)</span> is the value of the <span class="math inline">\(i\)</span> th observation, and <span class="math inline">\(w_i\)</span> is the weight assigned to that observation. In the context of estimating the representation of a group in the population, the value of <span class="math inline">\(x_i\)</span> is the estimate of the proportion of the group in the sample, and the value of <span class="math inline">\(w_i\)</span> is the weight assigned to that estimate.</p>
+<p>In the simplest example, where CLC is combining a single estimate from a small sample with a single estimate from a public data source, CLC has one choice to make: what weights to use, or how much to ‘trust’ each estimate. This choice boils down to a judgement call about how much information the public data source provides about the population of learners. In other words, the more that CLC expects the population of learners to resemble the population represented in the public data source, the more weight CLC should assign to the estimate from the public data source.</p>
+<p>If we fix the weight for the estimate from the survey data at <span class="math inline">\(n\)</span>, where <span class="math inline">\(n\)</span> is the number of responses to the survey, we can understand the weight applied to the public data as the number of learners we want the public data to ‘count’ for. For example, if we have 5 survey responses, and we want the public data to count for 10 learners, we would assign a weight of 5 to the survey data, and a weight of 10 to the public data. Of course, this would be equivalent to assigning a weight of 1 to the survey data, and a weight of 2 to the public data, but it is conceptually easier to think about the public data as ‘counting’ for a certain number of learners.</p>
+<p>Imagining the weight as a number of learners, it is intuitive that the weight assigned to the public data should not exceed the number of non-responding learners in the sample. If we have 5 survey responses, and 3 non-responding learners, we can’t assign a weight of 10 to the public data, because that would imply that we have 13 learners in the sample, which we don’t. The weight must also be greater than or equal to 0, but within this range, the choice of which weight to assign the public data should be based on CLC’s conceptual analysis of the relationship between the population of learners and the population represented in the public data.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+A straightforward option
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The challenge we’re attempting to address is having insufficient sample size to produce accurate estimates of the representation of different groups in the learner population. The option that addresses this challenge most directly is to establish a desired margin of error, calculate the required sample size <span class="math inline">\(S\)</span>, and then use the public data to ‘top up’ the sample size to <span class="math inline">\(S\)</span>. Plausible values for <span class="math inline">\(S\)</span> range from 100 to 1000, depending on the desired level of precision.</p>
+<p>The approach described above is not – strictly speaking – statistically rigorous, because it does not produce a reliable measure of uncertainty. As such, it’s not an approach that has received any attention in the statistical literature. It could be readily characterized as within the much underdeveloped field of ‘domain knowledge imputation’, but it is not a method that has been studied or validated, nor one for which there are established best practices.</p>
+<p>The established best practice is to increase the sample size until the desired margin of error is achieved, and then to report the margin of error along with the estimate. However, this approach is not feasible for CLC, because the sample size is not strictly under CLC’s control.</p>
+</div>
+</div>
+<p>CLC’s current approach replaces unrealiable estimates with either the last available reliable estimate, or with a population estimate. The approach described here is much the same, but it works to <em>augment</em> rather than <em>replace</em> the unreliable estimate.</p>
+</section>
+<section id="a-bayesian-regression-model" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="a-bayesian-regression-model"><span class="header-section-number">2.3.2</span> a bayesian regression model</h3>
+<p>A more statistically rigorous approach to augmenting estimates from small samples with information from other sources is to use a bayesian regression model with ‘informative priors’ based on the public data. The estimates produced by this approach will be very similar to those produced by the weighted average, but the model will produce measures of uncertainty that can be used to assess and report the reliability of the estimates.</p>
+</section>
+<section id="relevant-public-data-sources" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="relevant-public-data-sources"><span class="header-section-number">2.3.3</span> relevant public data sources</h3>
+<ul>
+<li><a href="https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/index.cfm?Lang=E">2021 Census Profiles</a>: includes usable population values for low income, rural, newcomer <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, indigenous, and racialized individuals at the FSA level. Sex representation is also available, but wouldn’t be useful for MLEs marketed specifically toward women and beyond (like ladies learning code, girls learning code).</li>
+<li><a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1310037401">2017 Canadian Survey on Disability</a>: includes usable population values for disability by age group and province.</li>
+<li><a href="https://data.ontario.ca/dataset/school-information-and-student-demographics/resource/e0e90bd5-d662-401a-a6d2-60d69ac89d14">Monthly Ontario Public School Demographics</a>: includes newcomer and low income representation among student bodies by school and school board, along with latitude and longitude for each school.</li>
+</ul>
+
+
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>the ‘error-prone’ descriptor, used here and elsewhere, should not be taken as a slight against the CLC evaluation team. Manual processes are inherently error-prone, requiring time and energy-intensive manual checks to ensure that the process was carried out correctly.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>CLC currently uses StatCan’s <a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710004001">quarterly estimates of the components of population growth</a> to estimate the representation of newcomers in the learner population. These estimates don’t actually track the representation of newcomers in the population, but rather the number new immigrants to Canada every quarter. Unless I’ve misunderstood CLC’s intentions, these should be replaced with localized estimates of newcomer representation from the 2021 Census.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./02-01_cwss-score.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Calculating CWSS Scores</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
